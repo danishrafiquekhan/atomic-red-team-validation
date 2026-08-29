@@ -16,3 +16,8 @@ _(filled in per case study — false positives, blind spots, and detection gaps 
 
 ## Lab safety
 All tests are run in an isolated VM (snapshotted beforehand), never against a production or home network. No real device names, usernames, or IP ranges are committed — see `case-studies/*/evidence/`.
+
+## One-time setup after cloning
+```bash
+git config core.hooksPath .githooks   # enables the gitleaks secret-scan on commit
+```
