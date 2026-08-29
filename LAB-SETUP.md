@@ -1,39 +1,36 @@
-# Lab setup — Atomic Red Team (safety-first)
+# Lab setup — do this properly, not fast
 
-This is the only repo in the portfolio that involves actually executing attack-simulation code, so it gets its own hard safety rules. Follow all of them, in order, before running a single Atomic test.
+This is the one repo in the portfolio where I'm actually running attack code, so it gets stricter rules than everything else. Read all of this before running a single test, not after.
 
-## Why this matters
-Atomic Red Team tests intentionally reproduce real attacker behaviour (credential dumping, persistence, discovery commands, etc). Run on the wrong machine or the wrong network, that's not a simulation anymore — it's a real incident on your own device or home network.
+## Why I'm being this careful about it
+Atomic Red Team tests are real attacker behaviour — credential dumping, persistence mechanisms, discovery commands. Run one on the wrong machine or the wrong network and it's not a simulation anymore, it's just an incident, and it's mine to clean up. I'd rather be annoyingly careful here than have a "how I accidentally locked myself out of my own accounts" story to explain later.
 
-## Hard rules
-1. **Never run Atomic Red Team on this Mac (the host) directly.** Everything runs inside an isolated VM.
-2. **VM networking must be NAT-only or Host-only — never Bridged.** Bridged mode puts the VM on your real home network, which defeats the isolation. UTM (already installed) defaults new VMs to "Shared Network" (NAT) — leave it there and do not switch to "Bridged."
-3. **Disable shared clipboard and shared folders** between the VM and this Mac while tests run — a test that manipulates the clipboard or drops a file could otherwise cross the boundary.
-4. **Snapshot the VM before every test session**, and roll back after — don't let a compromised-by-design VM accumulate state across sessions.
-5. **Never reuse real credentials, work accounts, or your real email/identity inside the VM.** Use a throwaway local Windows account.
-6. **Keep the VM off entirely when not actively testing** — don't leave it running as a standing target.
+## Rules I'm not skipping
+1. Never on this Mac directly. Everything happens inside an isolated VM.
+2. VM networking stays NAT/Shared Network, never Bridged. Bridged puts the VM on my actual home network and defeats the whole point. UTM defaults to Shared Network already — I'm just not changing it.
+3. Shared clipboard and shared folders off while a test is running. A test that messes with the clipboard or drops a file shouldn't have a path back to this Mac.
+4. Snapshot before every session, roll back after. I don't want a VM that's accumulated three sessions' worth of "compromised on purpose" state.
+5. No real accounts inside the VM — throwaway local Windows account only.
+6. VM stays off when I'm not actively testing. Not leaving it running as a standing target for no reason.
 
-## One-time setup (UTM — already installed on this Mac)
-1. Download a legitimate Windows evaluation VM image yourself from Microsoft (e.g. the [Windows 11 Enterprise evaluation](https://www.microsoft.com/evalcenter/evaluate-windows-11-enterprise)) — this is a deliberate manual step: it's a multi-GB download and you should read Microsoft's own EULA before agreeing to it, not have it fetched silently on your behalf.
-2. In UTM: **New VM → Virtualize → Windows**, point it at the downloaded ISO.
-3. Network: leave it on the UTM default (**Shared Network / NAT**). Do not change to Bridged.
-4. Sharing: leave **Shared Directory** and clipboard sharing off.
-5. After Windows installs, inside the VM: install PowerShell 7 and the [Atomic Red Team](https://github.com/redcanaryco/invoke-atomicredteam) PowerShell module, following their install instructions **inside the VM only**.
-6. Take a UTM snapshot of this clean state before running any test. Restore to it after each session.
+## Getting the VM built
+1. Download a Windows evaluation image myself, directly from Microsoft (the Windows 11 Enterprise eval is the usual one). Not automating this — it's several GB and there's a EULA attached that I want to actually read, not click through blind.
+2. UTM → New VM → Virtualize → Windows, point it at the ISO.
+3. Leave networking on Shared Network (NAT). Don't touch Bridged.
+4. Leave shared directories and clipboard sync off.
+5. Once Windows is up: install PowerShell 7 and the Atomic Red Team module (`invoke-atomicredteam`) inside the VM, following their own install docs.
+6. Snapshot that clean state before running anything. Roll back to it after.
 
-## Running a test (from inside the VM, not this Mac)
+## Running a test
 ```powershell
-# Example only — inside the isolated VM, never on the host
+# inside the VM only, never on the host
 Install-Module -Name invoke-atomicredteam -Scope CurrentUser
 Import-Module invoke-atomicredteam
 Invoke-AtomicTest T1078.004 -ShowDetailsBrief
 ```
 
-## Getting evidence back out safely
-Don't use a live shared folder. Instead:
-- Take a screenshot inside the VM, review it for anything sensitive, then transfer just that file out via UTM's one-off file copy (or a throwaway USB image), not a persistent shared mount.
-- Sanitise device names, usernames, and IPs before it ever lands in `case-studies/*/evidence/` in this repo — see the root README's security note.
+## Getting evidence out without breaking the isolation
+No live shared folder for this — screenshot inside the VM, check it for anything sensitive, then move just that one file out through UTM's one-off file copy. Sanitise hostnames/usernames/IPs before they land anywhere in this repo.
 
-## After each session
-- Roll back the VM to the clean snapshot.
-- Power the VM off.
+## After a session
+Roll the VM back to the clean snapshot, power it off.

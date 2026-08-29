@@ -1,15 +1,15 @@
 # T1078.004 — Valid Accounts: Cloud Accounts
 
-**Status: planned**
+Not run yet — waiting on the VM (see the root `LAB-SETUP.md`). Filling this in as a template so I know exactly what to capture once I do run it.
 
-## Attack
-_(which Atomic Red Team test was run)_
+## What I ran
+(which specific Atomic test, and the exact command)
 
-## Telemetry generated
-_(which logs/signals it produced)_
+## What it actually produced
+(the telemetry/logs it generated — not what I assumed it would produce, what it actually did)
 
-## Detection
-_(which rule from detection-engineering should catch this, and whether it did)_
+## Which rule should catch this
+(pointing back at the matching rule in detection-engineering — probably password-spray.yml or suspicious-signin-velocity.yml for this technique)
 
-## Outcome
-_(result — caught, missed, tuned, etc.)_
+## Did it catch it
+(caught clean / caught but needed tuning / missed entirely — and why, if I know why)

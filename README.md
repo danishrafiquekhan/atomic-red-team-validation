@@ -1,23 +1,14 @@
-# Atomic Red Team Validation
+# atomic-red-team-validation
 
-**Status: in progress** — attack simulation write-ups from isolated lab testing, used to validate the detections in [detection-engineering](https://github.com/danishrafiquekhan/detection-engineering).
+Writing a detection rule is one thing. Knowing it actually fires on the behaviour it's supposed to catch is a different thing entirely, and I think it's the part a lot of portfolios skip. This is where I run real Atomic Red Team tests in an isolated VM and check whether the rules in `detection-engineering` actually catch what I claim they catch.
 
-## What this is
-Case studies that run an Atomic Red Team test against a specific MITRE ATT&CK technique, capture the resulting telemetry, and check whether a detection actually fires on it.
+Each case study follows the same shape: what I ran, what telemetry it produced, which rule was supposed to catch it, and whether it actually did. If a rule misses, that goes in the write-up too — a missed detection with an honest explanation is more useful to show than a rule I never actually tested.
 
-## Why I built it
-Writing a detection rule and *validating* it are different skills. This is where I prove rules actually catch the behaviour they claim to.
+Nothing here has been run yet — see `LAB-SETUP.md` for why (short version: it needs a Windows VM I haven't built yet, on purpose, since it's a multi-GB download with a EULA I want to actually read first, not something to grab automatically).
 
-## How it works
-Each case study in `case-studies/` follows: attack → telemetry generated → detection → outcome, with sanitised evidence (screenshots/log excerpts).
-
-## What I learned / trade-offs
-_(filled in per case study — false positives, blind spots, and detection gaps found go here)_
-
-## Lab safety
-All tests are run in an isolated VM (snapshotted beforehand), never against a production or home network. No real device names, usernames, or IP ranges are committed — see `case-studies/*/evidence/`.
+Everything runs in an isolated VM, snapshotted before each session, never on my actual network. No real device names, usernames, or IPs ever make it into `case-studies/*/evidence/`.
 
 ## One-time setup after cloning
 ```bash
-git config core.hooksPath .githooks   # enables the gitleaks secret-scan on commit
+git config core.hooksPath .githooks
 ```
