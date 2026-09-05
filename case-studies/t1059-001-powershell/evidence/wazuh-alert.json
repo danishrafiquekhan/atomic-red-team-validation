@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-09-04T23:44:50.323+0000",
+  "rule": {
+    "level": 12,
+    "description": "A powershell process created by WMI executed a base64 encoded command",
+    "id": "92071",
+    "mitre": {
+      "id": ["T1047", "T1059.001"],
+      "tactic": ["Execution"],
+      "technique": ["Windows Management Instrumentation", "PowerShell"]
+    },
+    "groups": ["sysmon", "sysmon_eid1_detections", "windows"]
+  },
+  "agent": { "id": "001", "name": "win-atomic-lab" },
+  "decoder": { "name": "windows_eventchannel" },
+  "data": {
+    "win": {
+      "system": {
+        "providerName": "Microsoft-Windows-Sysmon",
+        "eventID": "1",
+        "channel": "Microsoft-Windows-Sysmon/Operational",
+        "computer": "WIN-ATOMICLAB"
+      },
+      "eventdata": {
+        "utcTime": "2026-09-04 23:44:50.293",
+        "processId": "3096",
+        "image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "commandLine": "powershell.exe -NoProfile -E VwByAGkAdABlAC0ASABvAHMAdAAgADYAMAAxADIANgAxADYAOAAtAGEANgBhAGIALQA0ADYAMQA1AC0AOQA0AGYAMAAtADAAMwA0ADIANAAxADMANgBiAGEAMgBjAA==",
+        "user": "WIN-ATOMICLAB\\Administrator",
+        "integrityLevel": "High",
+        "hashes": "MD5=2E0CCB27064856E3D55017FA2D33A7B9,SHA256=1C84C8632C5269F24876ED9F49FA810B49F77E1E92E8918FC164C34B020F9A94,IMPHASH=BF7A6E7A62C3F5B2E8E069438AC1DD3D",
+        "parentImage": "C:\\Windows\\System32\\wbem\\WmiPrvSE.exe",
+        "parentCommandLine": "C:\\Windows\\system32\\wbem\\wmiprvse.exe -secured -Embedding",
+        "parentUser": "NT AUTHORITY\\NETWORK SERVICE"
+      }
+    }
+  },
+  "location": "EventChannel"
+}

@@ -4,7 +4,7 @@ Writing a detection rule is one thing. Knowing it actually fires on the behaviou
 
 Each case study follows the same shape: what I ran, what telemetry it produced, which rule was supposed to catch it, and whether it actually did. If a rule misses, that goes in the write-up too. A missed detection with an honest explanation is more useful to show than a rule I never actually tested.
 
-Nothing here has been run yet. The isolated Windows VM these tests need now exists (built via QEMU, Windows Server 2022 evaluation, unattended install) — see `LAB-SETUP.md`. It doesn't have Sysmon or a Wazuh agent installed on it yet, so it can't generate the telemetry these case studies need. That's the actual next step, not this repo's current state.
+The first real technique has been run — see `case-studies/t1059-001-powershell/`, T1059.001, caught clean by Wazuh's built-in Sysmon ruleset with correct MITRE mapping. The isolated Windows VM (built via QEMU, Windows Server 2022 evaluation, unattended install — see `LAB-SETUP.md`) now has Sysmon and an active Wazuh agent installed. T1078.004 is still "planned, not run yet" — one real run down, more to go.
 
 Everything runs in an isolated VM, snapshotted before each session, never on my actual network. No real device names, usernames, or IPs ever make it into `case-studies/*/evidence/`.
 
