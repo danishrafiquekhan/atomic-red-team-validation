@@ -1,5 +1,7 @@
 **atomic-red-team-validation**
 
+[![CI](https://github.com/danishrafiquekhan/atomic-red-team-validation/actions/workflows/ci.yml/badge.svg)](https://github.com/danishrafiquekhan/atomic-red-team-validation/actions/workflows/ci.yml)
+
 Writing a detection rule is one thing. Knowing it actually fires on the behaviour it is supposed to catch is a different thing entirely, and I think it is the part a lot of portfolios skip. This is where I run real Atomic Red Team tests in an isolated VM and check whether the rules in `detection-engineering` actually catch what I claim they catch.
 
 Each case study follows the same shape: what I ran, what telemetry it produced, which rule was supposed to catch it, and whether it actually did. If a rule misses, that goes in the write-up too. A missed detection with an honest explanation is more useful to show than a rule I never actually tested.
